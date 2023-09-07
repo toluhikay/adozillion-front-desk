@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../assets/images/Logo.png";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { userLogOut } from "../../features/auth/authSlice";
@@ -9,6 +9,8 @@ import { toast } from "react-hot-toast";
 
 const Dashboard = () => {
 	const dispatch = useAppDispatch();
+	const [realtor, setRealtor] = useState("");
+	const [inputRealtor, setInputRealtor] = useState(false);
 	const navigate = useNavigate();
 	const formik = useFormik({
 		initialValues: {
@@ -22,7 +24,8 @@ const Dashboard = () => {
 			product: "",
 		},
 		onSubmit: async (values) => {
-			const { data, error } = await supabase.from("reception-clients").insert([values]).select();
+			const formValues = { ...values, realtor_group: realtor };
+			const { data, error } = await supabase.from("reception-clients").insert([formValues]).select();
 			if (data) {
 				toast.success("Form Submitted Successfully");
 				setTimeout(() => {
@@ -74,15 +77,45 @@ const Dashboard = () => {
 							Realtor Group
 						</label>
 						<br />
-						<select className='w-full rounded text-sm  border-[#e9aa08] outline-none border p-2' {...formik.getFieldProps("realtor_group")} id='' required>
+						<select
+							className='w-full rounded text-sm  border-[#e9aa08] outline-none border p-2'
+							id=''
+							required
+							onChange={(e) => {
+								if (e.currentTarget.value !== "OTHERS") {
+									setRealtor(e.currentTarget.value);
+									setInputRealtor(false);
+								} else if (e.currentTarget.value === "OTHERS") {
+									setInputRealtor(true);
+									setRealtor("");
+								}
+							}}
+						>
 							<option value=''>Select and Option</option>
-							<option value='RENS'>RENS</option>
+							<option value='REMS'>RENS</option>
 							<option value='BRG'>BRG</option>
 							<option value='TEAM FOCUS'>TEAM FOCUS</option>
 							<option value='VGR'>VGR</option>
-							<option value='NONE'>NONE</option>
+							<option value='OTHERS'>OTHERS</option>
 						</select>
 					</div>
+					{inputRealtor ? (
+						<div className='w-full mb-6'>
+							<label className='text-sm font-light' htmlFor=''>
+								Enter Realtor Name
+							</label>
+							<br />
+							<input
+								type='text'
+								className='w-full rounded border-[#e9aa08] outline-none border p-2'
+								onChange={(e) => {
+									if (inputRealtor) {
+										setRealtor(e.target.value);
+									}
+								}}
+							/>
+						</div>
+					) : null}
 					<div className='w-full mb-6'>
 						<label className='text-sm font-light' htmlFor=''>
 							Reason for call
@@ -91,7 +124,7 @@ const Dashboard = () => {
 						<select className='w-full rounded text-sm  border-[#e9aa08] outline-none border p-2' {...formik.getFieldProps("reason_of_call")} id='' required>
 							<option value=''>Select and Option</option>
 							<option value='OFFICIAL'>OFFICIAL</option>
-							<option value='DOCUMENT'>DOCUMENT</option>
+							<option value='DOCUMENT DOCUMENTS'>DOCUMENT DOCUMENTS</option>
 						</select>
 					</div>
 					<div className='w-full mb-6'>
