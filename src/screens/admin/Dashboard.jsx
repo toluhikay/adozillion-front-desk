@@ -92,7 +92,7 @@ const Dashboard = () => {
 							}}
 						>
 							<option value=''>Select and Option</option>
-							<option value='REMS'>RENS</option>
+							<option value='REMS'>REMS</option>
 							<option value='BRG'>BRG</option>
 							<option value='TEAM FOCUS'>TEAM FOCUS</option>
 							<option value='VGR'>VGR</option>
