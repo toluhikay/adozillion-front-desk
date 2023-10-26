@@ -4,14 +4,18 @@ import Router from "./router/Router";
 import { Toaster } from "react-hot-toast";
 
 function App() {
-	return (
-		<div className='App'>
-			<WebRouter>
-				<Router></Router>
-			</WebRouter>
-			<Toaster />
-		</div>
-	);
+  return (
+    <div className="App">
+      <WebRouter>
+        <Router></Router>
+      </WebRouter>
+      <Toaster
+        toastOptions={{
+          duration: 5000,
+        }}
+      />
+    </div>
+  );
 }
 
 export default App;
