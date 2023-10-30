@@ -57,9 +57,7 @@ const Dashboard = () => {
       const { data, error } = await supabase.from("reception-clients").insert([formValues]).select();
       if (data) {
         toast.success("Form Submitted Successfully");
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1500);
+        navigate("/success");
         formik.handleReset();
       } else if (error) {
         toast.error(error.message);
